@@ -1,24 +1,19 @@
 <template>
   <div class="login-container">
-
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
+    <el-form ref="loginForm" :model="loginForm" class="login-form" auto-complete="on" label-position="left">
       <div class="title-container">
         <h3 class="title">紫顺后台管理</h3>
-        <!--<lang-select class="set-language"/>-->
       </div>
-
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
           v-model="loginForm.username"
-          :placeholder="请输入账户"
+          placeholder="请输入账户"
           name="username"
           type="text"
-          auto-complete="on"
-        />
+          auto-complete="on"/>
       </el-form-item>
 
       <el-form-item prop="password">
@@ -28,7 +23,7 @@
         <el-input
           :type="passwordType"
           v-model="loginForm.password"
-          :placeholder="请输入密码"
+          placeholder="请输入密码"
           name="password"
           auto-complete="on"
           @keyup.enter.native="handleLogin" />
@@ -43,48 +38,25 @@
 
     </el-form>
 
-    <!--<el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>-->
-    <!--{{ $t('login.thirdpartyTips') }}-->
-    <!--<br>-->
-    <!--<br>-->
-    <!--<br>-->
-    <!--<social-sign />-->
-    <!--</el-dialog>-->
-
   </div>
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './socialsignin'
-
+import md5 from 'js-md5'
 export default {
   name: 'Login',
   components: { LangSelect, SocialSign },
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
     return {
       loginForm: {
-        username: 'admin',
-        password: '1111111'
+        username: '123456',
+        password: '123456'
       },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+      md5LoginForm: {
+        username: '',
+        password: ''
       },
       passwordType: 'password',
       loading: false,
@@ -116,10 +88,13 @@ export default {
       }
     },
     handleLogin() {
+      this.md5LoginForm.password = md5(this.loginForm.password)
+      this.md5LoginForm.username = md5(this.loginForm.username)
+
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
+          this.$store.dispatch('LoginByUsername', this.md5LoginForm).then(() => {
             this.loading = false
             this.$router.push({ path: this.redirect || '/' })
           }).catch(() => {
@@ -130,24 +105,6 @@ export default {
           return false
         }
       })
-    },
-    afterQRScan() {
-      // const hash = window.location.hash.slice(1)
-      // const hashObj = getQueryObject(hash)
-      // const originUrl = window.location.origin
-      // history.replaceState({}, '', originUrl)
-      // const codeMap = {
-      //   wechat: 'code',
-      //   tencent: 'code'
-      // }
-      // const codeName = hashObj[codeMap[this.auth_type]]
-      // if (!codeName) {
-      //   alert('第三方登录失败')
-      // } else {
-      //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-      //     this.$router.push({ path: '/' })
-      //   })
-      // }
     }
   }
 }

@@ -12,16 +12,27 @@ export function loginByUsername(username, password) {
   })
 }
 
+export function login(username, password) {
+  return request({
+    url: '/admin/user/login',
+    method: 'post',
+    data: {
+      username,
+      password
+    }
+  })
+}
+
 export function logout() {
   return request({
-    url: '/login/logout',
+    url: '/admin/user/logout',
     method: 'post'
   })
 }
 
-export function getUserInfo(token) {
+export function getInfo(token) {
   return request({
-    url: '/user/info',
+    url: '/admin/user/info',
     method: 'get',
     params: { token }
   })
