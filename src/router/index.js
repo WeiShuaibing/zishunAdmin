@@ -167,7 +167,7 @@ export const asyncRouterMap = [
       }
     ]
   },
-  {
+  /* {
     path: '/customize',
     component: Layout,
     redirect: '/customize/Customizelist',
@@ -189,7 +189,7 @@ export const asyncRouterMap = [
         meta: { title: '添加实景' }
       }
     ]
-  },
+  },*/
   // {
   //   path: '/case',
   //   component: Layout,

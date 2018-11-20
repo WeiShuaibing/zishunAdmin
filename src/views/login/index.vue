@@ -51,8 +51,8 @@ export default {
   data() {
     return {
       loginForm: {
-        username: '123456',
-        password: '123456'
+        username: 'Zishunguanwang.',
+        password: 'Zishunguanwang.'
       },
       md5LoginForm: {
         username: '',
@@ -88,6 +88,7 @@ export default {
       }
     },
     handleLogin() {
+      console.log('登录处理方法：' + this.loginForm.password)
       this.md5LoginForm.password = md5(this.loginForm.password)
       this.md5LoginForm.username = md5(this.loginForm.username)
 

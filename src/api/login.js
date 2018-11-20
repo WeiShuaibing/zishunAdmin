@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 
 export function loginByUsername(username, password) {
+  console.log('登录API：' + password)
   const data = {
     username,
     password
