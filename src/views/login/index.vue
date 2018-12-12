@@ -51,8 +51,8 @@ export default {
   data() {
     return {
       loginForm: {
-        username: 'Zishunguanwang.',
-        password: 'Zishunguanwang.'
+        username: '',
+        password: ''
       },
       md5LoginForm: {
         username: '',
